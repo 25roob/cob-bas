@@ -1,0 +1,70 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/10/23  20:08:03 PAGE   1
+SOURCE FILE: VER-ARIT                   OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. VER-ARIT.
+    3                       ENVIRONMENT DIVISION.
+    4                       DATA DIVISION.
+    5                       WORKING-STORAGE SECTION.
+    6                       01 WKS-PAG-MEN   PIC 9(05).
+    7                       01 WKS-TAS-ANU   PIC 9V99.
+    8                       01 WKS-BONIF     PIC 99.
+    9                       01 WKS-TAS-MEN   PIC 9V999.
+   10                       01 WKS-INT-MEN   PIC 9(04)V99.
+   11                       01 WKS-NET-PAG   PIC 9(06)V99.
+   12                       01 WKS-TAS-MEN-E PIC 9.999.
+   13                       01 WKS-INT-MEN-E PIC $ZZ,ZZZ.99.
+   14                       01 WKS-NET-PAG-E PIC $ZZZ,ZZZ.99.
+   15
+   16                       PROCEDURE DIVISION.
+   17    000002             INICIO.
+   18    000005                 DISPLAY "INTRODUCE PAGO MENSUAL:" LINE 10 POSITION 05.
+   19    000017                 ACCEPT WKS-PAG-MEN LINE 10 POSITION 33.
+   20    000029                 DISPLAY "TASA INTERES ANUAL:" LINE 11 POSITION 05.
+   21    000041                 ACCEPT WKS-TAS-ANU LINE 11 POSITION 33.
+   22    000053                 DISPLAY "BONIFICACION:" LINE 12 POSITION 05.
+   23    000065                 ACCEPT WKS-BONIF LINE 12 POSITION 33.
+   24
+   25                   **   DIVIDE WKS-TAS-ANU BY 12 GIVING WKS-TAS-MEN.
+   26    000077                 COMPUTE
+   27                               WKS-TAS-MEN = WKS-TAS-ANU / 12.
+   28
+   29    000086                 MULTIPLY WKS-TAS-MEN BY WKS-PAG-MEN GIVING WKS-INT-MEN.
+   30                   **   ADD WKS-INT-MEN TO WKS-PAG-MEN GIVING WKS-NET-PAG.
+   31    000094                 COMPUTE
+   32                             WKS-NET-PAG = WKS-INT-MEN + WKS-PAG-MEN - WKS-BONIF.
+   33
+   34    000103                 MOVE WKS-TAS-MEN TO WKS-TAS-MEN-E.
+   35    000109                 MOVE WKS-INT-MEN TO WKS-INT-MEN-E.
+   36    000114                 MOVE WKS-NET-PAG TO WKS-NET-PAG-E.
+   37
+   38    000119                 DISPLAY "TASA MENSUAL: " LINE 13 POSITION 05.
+   39    000131                 DISPLAY WKS-TAS-MEN-E LINE 13 POSITION 33.
+   40    000143                 DISPLAY "INTERES MENSUAL:" LINE 14 POSITION 05.
+   41    000155                 DISPLAY WKS-INT-MEN-E LINE 14 POSITION 33.
+   42    000167                 DISPLAY "TOTAL NETO: " LINE 15 POSITION 05.
+   43    000179                 DISPLAY WKS-NET-PAG-E LINE 15 POSITION 33.
+   44    000191                 STOP RUN.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/10/23  20:08:03 PAGE   2
+SOURCE FILE: VER-ARIT                   OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           VER-ARIT
+
+
+READ ONLY SIZE =                       714 (X"000002CA") BYTES
+
+READ/WRITE SIZE =                       72 (X"00000048") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =        786 (X"00000312") BYTES       44 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM VER-ARIT
+
+
+
+OBJECT VERSION LEVEL =   1
+

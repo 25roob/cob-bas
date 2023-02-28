@@ -1,0 +1,89 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/22/23  01:15:32 PAGE   1
+SOURCE FILE: BUS-ID                     OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. BUS-ID.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLI-INDR ASSIGN TO DISK
+    7                           ORGANIZATION IS INDEXED
+    8                           ACCESS MODE IS RANDOM
+    9                           RECORD KEY IS ID-CLI.
+   10                       DATA DIVISION.
+   11                       FILE SECTION.
+   12                       FD CLI-INDR.
+   13                   *
+   14                       01 REG-CLI.
+   15                           03 ID-CLI     PIC 9(03).
+   16                           03 NOM-CLI    PIC X(30).
+   17                           03 CLA-TAR    PIC 9.
+   18                           03 NOM-TAR    PIC X(20).
+   19                           03 ANUA       PIC 9(05)V99.
+   20                           03 FEC-ING    PIC 9(08).
+   21
+   22                       WORKING-STORAGE SECTION.
+   23                       01 WKS-ID             PIC 999.
+   24                       77 WKS-FIN            PIC 9.
+   25                       77 WKS-DESC           PIC X.
+   26
+   27                       PROCEDURE DIVISION.
+   28    000002             INICIO.
+   29    000005                 PERFORM 1000-INICIO.
+   30    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+   31    000019                 PERFORM 3000-FIN.
+   32    000022                 STOP RUN.
+   33
+   34    000025             1000-INICIO.
+   35    000028                 OPEN I-O CLI-INDR.
+   36
+   37    000037             2000-PROCESO.
+   38    000040                 DISPLAY "               " LINE 11 POSITION 05.
+   39    000052                 DISPLAY "INTRODUCE EL ID:" LINE 10 POSITION 05.
+   40    000064                 ACCEPT WKS-ID LINE 10 POSITION 35.
+   41    000076                 MOVE WKS-ID TO ID-CLI.
+   42    000083                 READ CLI-INDR
+   43                            INVALID KEY
+   44                            MOVE 0 TO WKS-ID
+   45                            MOVE "   " TO ID-CLI
+   46                            DISPLAY "NO EXISTE           "
+   47                            LINE 11 POSITION 05
+   48                            INITIALIZE REG-CLI.
+   49    000152                 DISPLAY REG-CLI LINE 12 POSITION 05.
+   50
+   51    000165                 DISPLAY "DESEA RELIZAR OTRA CONSULTA?(S/N)"
+   52                                LINE 13 POSITION 05.
+   53    000177                 ACCEPT WKS-DESC LINE 13 POSITION 43.
+   54    000189                 IF WKS-DESC = "N"
+   55                                MOVE 1 TO WKS-FIN.
+   56
+   57    000205             3000-FIN.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/22/23  01:15:32 PAGE   2
+SOURCE FILE: BUS-ID                     OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   BUS-ID
+
+   58    000208                 CLOSE CLI-INDR.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/22/23  01:15:32 PAGE   3
+SOURCE FILE: BUS-ID                     OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           BUS-ID
+
+
+READ ONLY SIZE =                       702 (X"000002BE") BYTES
+
+READ/WRITE SIZE =                      274 (X"00000112") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =        976 (X"000003D0") BYTES       58 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM BUS-ID
+
+
+
+OBJECT VERSION LEVEL =   1
+

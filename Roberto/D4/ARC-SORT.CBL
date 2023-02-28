@@ -1,0 +1,42 @@
+	   IDENTIFICATION DIVISION.
+	   PROGRAM-ID. ARC-SORT.
+	   ENVIRONMENT DIVISION.
+	   INPUT-OUTPUT SECTION.
+	   FILE-CONTROL.
+	       SELECT CLIENTES ASSIGN TO DISK.
+		   SELECT CLI-ORD ASSIGN TO DISK.
+		   SELECT SOR-TEMP ASSIGN TO SORT.
+	   DATA DIVISION.
+	   FILE SECTION.
+	   FD CLIENTES.
+	   01 REG-CLI.
+	       03 ID-CLI     PIC 9(03).
+		   03 NOM-CLI    PIC X(30).
+		   03 FILLER     PIC X(36).
+      *		   03 CLA-TAR    PIC 9.
+      *		   03 NOM-TAR    PIC X(20).
+      *		   03 ANUA       PIC 9(05)V99.
+      *		   03 FEC-ING    PIC 9(08).
+	   
+	   FD CLI-ORD.
+	   01 REG-CLI-O.
+		   03 ID-CLI-O       PIC 9(03).
+		   03 NOM-CLI        PIC X(30).
+		   03 FILLER         PIC X(36).
+		   
+	   SD SOR-TEMP.
+	   01 REG-CLI-S.
+	       03 ID-CLI-S       PIC 9(03).
+		   03 NOM-CLI-S      PIC X(30).
+		   03 FILLER         PIC X(36).
+		   
+	   PROCEDURE DIVISION.
+	   INICIO.
+	       SORT SOR-TEMP
+		   ASCENDING KEY NOM-CLI-S
+		   USING CLIENTES
+		   GIVING CLI-ORD.
+		   
+		   DISPLAY "FIN DEL PROCESO" LINE 10 POSITION 05.
+		   
+		   STOP RUN.

@@ -1,0 +1,449 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   1
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. PRA-FIN.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLI-INDD ASSIGN TO DISK
+    7                           ORGANIZATION IS INDEXED
+    8                           ACCESS MODE IS DYNAMIC
+    9                           RECORD KEY IS ID-CLIENTE
+   10                        ALTERNATE RECORD KEY IS NOM-TAR WITH DUPLICATES
+   11                        ALTERNATE RECORD KEY IS FEC-ING WITH DUPLICATES.
+   12
+   13                           SELECT REP-CLI ASSIGN TO PRINTER.
+   14                           SELECT REP-TAR ASSIGN TO PRINTER.
+   15                       DATA DIVISION.
+   16                       FILE SECTION.
+   17                       FD CLI-INDD.
+   18                   *
+   19                       01 REG-CLI.
+   20                           03 ID-CLIENTE  PIC 9(03).
+   21                           03 NOM-CLI      PIC X(30).
+   22                           03 CLA-TAR      PIC 9.
+   23                           03 NOM-TAR     PIC X(20).
+   24                           03 ANUA           PIC 9(05)V99.
+   25                           03 FEC-ING       PIC 9(08).
+   26
+   27                       FD REP-CLI.
+   28                       01 LINEAC             PIC X(132).
+   29
+   30                       FD REP-TAR.
+   31                       01 LINEAT              PIC X(132).
+   32
+   33                       WORKING-STORAGE SECTION.
+   34                       01 WKS-TIPOT        PIC X(20).
+   35                    01 WKS-TOTAL-CLI PIC 99.
+   36                       01 WKS-CONT-LIN   PIC 99.
+   37                       01 WKS-TOTAL-ANUA  PIC 9(05)V99.
+   38                       01 WKS-CUTTER    PIC X(20).
+   39                       01 WKS-ANUALIS   PIC 9(05)V99.
+   40
+   41                       77 WKS-FIN            PIC 9.
+   42                       77 WKS-DESC        PIC 9.
+   43                       77 WKS-FINR1        PIC 9.
+   44                       77 WKS-ESPERA   PIC X.
+   45                       77 WKS-FINR2        PIC 9.
+   46
+   47
+   48                       01 WKS-HOY.
+   49                           03 WKS-ANO   PIC 99.
+   50                           03 WKS-MES   PIC 99.
+   51                           03 WKS-DIA     PIC 99.
+   52
+   53                   *----------VARIABLES DE REPORTE CLI-------------
+   54                      01 WKS-ENC1.
+   55                           03 FILLER         PIC X(28) VALUE SPACES.
+   56                           03 FILLER         PIC X(40)
+   57                                  VALUE "REPORTE DE CLIENTES".
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   2
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   PRA-FIN
+
+   58
+   59                       01 WKS-ENC2.
+   60                   *           03 FILLER         PIC X(03) VALUE SPACES.
+   61                           03 FILLER         PIC X(18)
+   62                                   VALUE "FECHA DE PROCESO: ".
+   63                           03 WKS-DIA      PIC 99.
+   64                           03 FILLER         PIC X VALUE "/".
+   65                           03 WKS-MES    PIC 99.
+   66                           03 FILLER         PIC X VALUE "/".
+   67                           03 WKS-ANO    PIC 99.
+   68                           03 FILLER         PIC X(38) VALUE SPACES.
+   69                           03 FILLER         PIC X(07) VALUE "PAG. : ".
+   70                           03 WKS-NUM-PAG           PIC 9(02).
+   71
+   72                       01 WKS-ENC3.
+   73                   *           03 FILLER         PIC X(03) VALUE SPACES.
+   74                           03 FILLER         PIC X(10) VALUE "ID-CLIENTE".
+   75                           03 FILLER         PIC X(02) VALUE SPACES.
+   76                           03 FILLER         PIC X(06) VALUE "NOMBRE".
+   77                           03 FILLER         PIC X(11) VALUE SPACES.
+   78                           03 FILLER         PIC X(15) VALUE "TIPO DE TARJETA".
+   79                           03 FILLER         PIC X(03) VALUE SPACES.
+   80                           03 FILLER         PIC X(14) VALUE "FEC DE INGRESO".
+   81                           03 FILLER         PIC X(03) VALUE SPACES.
+   82                           03 FILLER         PIC X(09) VALUE "ANUALIDAD".
+   83
+   84                       01 WKS-DET1.
+   85                           03 FILLER         PIC X(02) VALUE SPACES.
+   86                           03 WKS-ID        PIC 999.
+   87                           03 FILLER         PIC X(07) VALUE SPACES.
+   88                           03 WKS-NOMB PIC X(21).
+   89                           03 FILLER         PIC X(02) VALUE SPACES.
+   90                           03 WKS-TIPT    PIC X(10).
+   91                           03 FILLER         PIC X(03) VALUE SPACES.
+   92                           03 FILLER         PIC X(02) VALUE "20".
+   93                           03 WKS-FECH  PIC 9(06).
+   94                           03 FILLER         PIC X(07) VALUE SPACES.
+   95                           03 WKS-ANUF  PIC $$$,$$9.99.
+   96
+   97
+   98                       01 WKS-TOT1.
+   99                           03 FILLER         PIC X(38) VALUE SPACES.
+  100                           03 FILLER         PIC X(18) VALUE "TOTAL DE CLIENTES:".
+  101                           03 FILLER         PIC X(09) VALUE SPACES.
+  102                           03 WKS-TOCLI  PIC 99.
+  103
+  104                   *----------VARIABLES DE REPORTE TAR------------
+  105                      01 WKS-ENCA.
+  106                           03 FILLER         PIC X(28) VALUE SPACES.
+  107                           03 FILLER         PIC X(40)
+  108                                  VALUE "REPORTE DE TARJETAS".
+  109
+  110                       01 WKS-ENCB.
+  111                   *           03 FILLER         PIC X(03) VALUE SPACES.
+  112                           03 FILLER         PIC X(18)
+  113                                   VALUE "FECHA DE PROCESO: ".
+  114                           03 WKS-DIA      PIC 99.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   3
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   PRA-FIN
+
+  115                           03 FILLER         PIC X VALUE "/".
+  116                           03 WKS-MES    PIC 99.
+  117                           03 FILLER         PIC X VALUE "/".
+  118                           03 WKS-ANO    PIC 99.
+  119                           03 FILLER         PIC X(38) VALUE SPACES.
+  120                           03 FILLER         PIC X(07) VALUE "PAG. : ".
+  121                           03 WKS-NUM-PAGA           PIC 9(02).
+  122
+  123                       01 WKS-ENCBB.
+  124                           03 FILLER         PIC X(20) VALUE
+  125                               "TIPO DE TARJETA:".
+  126                           03 WKS-NOM-TARB  PIC X(20).
+  127
+  128                       01 WKS-ENCC.
+  129                   *           03 FILLER         PIC X(03) VALUE SPACES.
+  130                           03 FILLER         PIC X(10) VALUE "ID-CLIENTE".
+  131                           03 FILLER         PIC X(02) VALUE SPACES.
+  132                           03 FILLER         PIC X(06) VALUE "NOMBRE".
+  133                           03 FILLER         PIC X(10) VALUE SPACES.
+  134                           03 FILLER         PIC X(16) VALUE "CLAVE DE TARJETA".
+  135                           03 FILLER         PIC X(03) VALUE SPACES.
+  136                           03 FILLER         PIC X(14) VALUE "FEC DE INGRESO".
+  137                           03 FILLER         PIC X(03) VALUE SPACES.
+  138                           03 FILLER         PIC X(09) VALUE "ANUALIDAD".
+  139
+  140                       01 WKS-DETA.
+  141                           03 FILLER         PIC X(02) VALUE SPACES.
+  142                           03 WKS-IDT      PIC 999.
+  143                           03 FILLER         PIC X(07) VALUE SPACES.
+  144                           03 WKS-NOMT PIC X(21).
+  145                           03 FILLER         PIC X(03) VALUE SPACES.
+  146                           03 WKS-CLAT   PIC X(10).
+  147                           03 FILLER         PIC X(03) VALUE SPACES.
+  148                           03 FILLER         PIC X(02) VALUE "20".
+  149                           03 WKS-FECT  PIC 9(06).
+  150                           03 FILLER         PIC X(06) VALUE SPACES.
+  151                           03 WKS-ANUFT PIC $$$,$$9.99.
+  152
+  153                       01 WKS-TOTA.
+  154                           03 FILLER         PIC X(20) VALUE SPACES.
+  155                           03 FILLER         PIC X(16) VALUE
+  156                               "TOTAL ANUALIDAD".
+  157                           03 WKS-FTITAR PIC X(8).
+  158                           03 FILLER         PIC X(05) VALUE ":    ".
+  159                           03 WKS-TOANU PIC $$$$,$$9.99.
+  160
+  161                       01 WKS-TOTAS.
+  162                           03 FILLER         PIC X(20) VALUE SPACES.
+  163                           03 FILLER         PIC X(19) VALUE
+  164                               "TOTAL ANUALIDADES:".
+  165                   *           03 WKS-FTITARS PIC X(8).
+  166                           03 FILLER         PIC X(05) VALUE SPACES.
+  167                           03 WKS-TOANS PIC $$$$,$$9.99.
+  168
+  169
+  170                       PROCEDURE DIVISION.
+  171    000002             INICIO.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   4
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   PRA-FIN
+
+  172    000005                 PERFORM 1000-INICIO.
+  173    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+  174    000019                 PERFORM 3000-FIN.
+  175    000022                 STOP RUN.
+  176
+  177    000025             1000-INICIO.
+  178    000028                 OPEN INPUT CLI-INDD.
+  179
+  180    000037             2000-PROCESO.
+  181                   *           DISPLAY REG-CLI.
+  182                   *           READ CLI-INDD
+  183                   *           NEXT AT END MOVE 1 TO WKS-FIN.
+  184
+  185    000040                 DISPLAY SPACES LINE 01 POSITION 01 ERASE.
+  186    000055                 DISPLAY "REPORTE DE TARJETAS DE CLIENTES"
+  187                               LINE 10 POSITION 25.
+  188    000067                 DISPLAY "REPORTE POR CLIENTES (1)"
+  189                               LINE 12 POSITION 05.
+  190    000079                 DISPLAY "REPORTE POR TARJETAS (2)"
+  191                               LINE 13 POSITION 05.
+  192    000091                 DISPLAY "SALIR                (3)"
+  193                            LINE 14 POSITION 05.
+  194    000103                 DISPLAY "ELEGIR OPCION:" LINE 16 POSITION 05.
+  195    000115                 ACCEPT WKS-DESC LINE 16 POSITION 27.
+  196
+  197    000127                 IF WKS-DESC = 1
+  198                               PERFORM 2400-REPORTE-CLI
+  199                           ELSE IF WKS-DESC = 2
+  200                               PERFORM 2800-REPORTE-TAR
+  201                           ELSE IF WKS-DESC = 3
+  202                               MOVE 1 TO WKS-FIN.
+  203
+  204
+  205
+  206
+  207
+  208    000166             2400-REPORTE-CLI.
+  209    000169                 DISPLAY SPACE LINE 01  POSITION 01 ERASE.
+  210    000183              DISPLAY "PROCESO DE GENERACION DE REPORTE"
+  211                                                       LINE 03 POSITION 20.
+  212    000195                 PERFORM 2410-INICIO-REP-CLI.
+  213    000198                 PERFORM 2420-PROCESO-GEN-REP-CLI UNTIL WKS-FINR1 = 1.
+  214    000209                 PERFORM 2430-TERMINA-GEN-REP-CLI.
+  215
+  216
+  217    000214             2410-INICIO-REP-CLI.
+  218    000217                 OPEN
+  219                               OUTPUT REP-CLI.
+  220    000224                 PERFORM 2415-LEE-ARCHIVO.
+  221    000227              IF WKS-FINR1 = 0
+  222                            PERFORM 2417-GENERA-ENCABEZADO.
+  223
+  224    000238             2415-LEE-ARCHIVO.
+  225    000241                 READ CLI-INDD
+  226                               NEXT
+  227                               AT END MOVE 1 TO WKS-FINR1.
+  228
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   5
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   PRA-FIN
+
+  229    000258             2417-GENERA-ENCABEZADO.
+  230
+  231    000261              ADD 1 TO WKS-NUM-PAG.
+  232    000265                 MOVE SPACES TO LINEAC.
+  233    000271                 MOVE WKS-ENC1 TO LINEAC.
+  234    000279                 WRITE LINEAC AFTER PAGE.
+  235
+  236    000288                 ACCEPT WKS-HOY FROM DATE.
+  237    000294                 MOVE CORR WKS-HOY TO WKS-ENC2.
+  238
+  239    000313                 MOVE WKS-ENC2 TO LINEAC.
+  240    000321                 WRITE LINEAC AFTER 1.
+  241
+  242    000333                 MOVE WKS-ENC3 TO LINEAC.
+  243    000341                 WRITE LINEAC AFTER 2.
+  244    000353                 MOVE 3 TO WKS-CONT-LIN.
+  245
+  246
+  247    000362             2420-PROCESO-GEN-REP-CLI.
+  248
+  249    000365                 MOVE ID-CLIENTE   TO WKS-ID.
+  250    000372                 MOVE NOM-CLI       TO WKS-NOMB.
+  251    000379                 MOVE NOM-TAR     TO WKS-TIPT.
+  252    000386                 MOVE FEC-ING       TO WKS-FECH.
+  253    000391                 MOVE ANUA           TO WKS-ANUF.
+  254
+  255    000396                 IF WKS-CONT-LIN > 80
+  256                               PERFORM 2417-GENERA-ENCABEZADO.
+  257
+  258    000406                 MOVE WKS-DET1 TO LINEAC
+  259    000415                 WRITE LINEAC AFTER 1
+  260    000427                 ADD 1 TO WKS-TOTAL-CLI.
+  261
+  262    000431                 PERFORM 2415-LEE-ARCHIVO.
+  263
+  264    000436             2430-TERMINA-GEN-REP-CLI.
+  265
+  266    000439                 MOVE WKS-TOTAL-CLI TO WKS-TOCLI.
+  267    000446                 MOVE WKS-TOT1 TO LINEAC.
+  268    000454                 WRITE LINEAC AFTER 2.
+  269    000466                 CLOSE CLI-INDD
+  270                               REP-CLI.
+  271
+  272    000479                 DISPLAY "REPORTE GENERADO" LINE 17 POSITION 05.
+  273    000492                 DISPLAY "ACEPTAR" LINE 18 POSITION 05.
+  274    000504                 ACCEPT WKS-ESPERA LINE 18 POSITION 20.
+  275
+  276                   *------------------SEGUNDO REPORTE---------------------
+  277
+  278    000518             2800-REPORTE-TAR.
+  279
+  280    000521                 DISPLAY SPACE LINE 01  POSITION 01 ERASE.
+  281    000535              DISPLAY "PROCESO DE GENERACION DE REPORTE"
+  282                                                       LINE 03 POSITION 20.
+  283    000547                 PERFORM 2810-INICIO-REP-TAR.
+  284
+  285    000550                 PERFORM 2820-PROCESO-GEN-REP-TAR UNTIL WKS-FINR2 = 1.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   6
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   PRA-FIN
+
+  286    000561                 PERFORM 2830-TERMINA-GEN-REP-TAR.
+  287
+  288
+  289    000566             2810-INICIO-REP-TAR.
+  290    000569                 OPEN
+  291                               OUTPUT REP-TAR.
+  292
+  293    000576                 MOVE SPACES TO NOM-TAR.
+  294    000583                 START CLI-INDD KEY IS GREATER OR EQUAL TO NOM-TAR
+  295                           INVALID KEY MOVE 1 TO WKS-FINR2.
+  296
+  297
+  298
+  299                   *           MOVE SPACES TO NOM-TAR.
+  300                   *           START CLI-INDD KEY IS GREATER OR EQUAL TO NOM-TAR.
+  301
+  302    000602              IF WKS-FINR2 = 0
+  303                               PERFORM 2815-LEE-ARCHIVO.
+  304
+  305                   *               PERFORM 2817-GENERA-ENCABEZADO.
+  306
+  307
+  308
+  309    000614             2815-LEE-ARCHIVO.
+  310    000617                 READ CLI-INDD
+  311                               NEXT
+  312                               AT END MOVE 1 TO WKS-FINR2.
+  313
+  314
+  315    000634             2817-GENERA-ENCABEZADO.
+  316
+  317    000637                 ADD 1 TO WKS-NUM-PAGA.
+  318    000641                 MOVE SPACES TO LINEAT.
+  319    000647                 MOVE WKS-ENCA TO LINEAT.
+  320    000655                 WRITE LINEAT AFTER PAGE.
+  321
+  322    000664                 ACCEPT WKS-HOY FROM DATE.
+  323    000670                 MOVE CORR WKS-HOY TO WKS-ENCB.
+  324
+  325    000689                 MOVE WKS-ENCB TO LINEAT.
+  326    000697                 WRITE LINEAT AFTER 1.
+  327
+  328    000709                 MOVE NOM-TAR TO WKS-NOM-TARB.
+  329    000716                 MOVE WKS-ENCBB TO LINEAT.
+  330    000724                 WRITE LINEAT AFTER 2.
+  331
+  332    000736                 MOVE WKS-ENCC TO LINEAT.
+  333    000744                 WRITE LINEAT AFTER 2.
+  334    000756                 MOVE 3 TO WKS-CONT-LIN.
+  335
+  336
+  337    000765             2820-PROCESO-GEN-REP-TAR.
+  338
+  339    000768                 MOVE ID-CLIENTE  TO WKS-IDT.
+  340    000775                 MOVE NOM-CLI      TO WKS-NOMT.
+  341    000782                 MOVE CLA-TAR      TO WKS-CLAT.
+  342    000790                 MOVE ANUA           TO WKS-ANUFT.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   7
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   PRA-FIN
+
+  343    000795                 MOVE FEC-ING       TO WKS-FECT.
+  344
+  345
+  346    000800                 IF WKS-CONT-LIN > 80
+  347                               PERFORM 2817-GENERA-ENCABEZADO.
+  348
+  349    000811                 IF WKS-CUTTER = NOM-TAR
+  350                               NEXT SENTENCE
+  351                           ELSE
+  352                               PERFORM 2825-GENERA-PIE
+  353                               MOVE 0 TO WKS-TOTAL-ANUA
+  354                               PERFORM 2817-GENERA-ENCABEZADO
+  355                               MOVE NOM-TAR TO WKS-CUTTER.
+  356
+  357                   *           MOVE NOM-TAR TO WKS-CUTTER.
+  358
+  359    000842                 MOVE WKS-DETA TO LINEAT
+  360    000851                 WRITE LINEAT AFTER 1
+  361    000863                 ADD ANUA TO WKS-TOTAL-ANUA.
+  362    000869                 ADD ANUA TO WKS-ANUALIS.
+  363
+  364    000875                 PERFORM 2815-LEE-ARCHIVO.
+  365
+  366    000880             2825-GENERA-PIE.
+  367    000883                 IF WKS-NUM-PAGA = 0
+  368                               NEXT SENTENCE
+  369                           ELSE
+  370                               MOVE WKS-CUTTER TO WKS-FTITAR
+  371                               MOVE WKS-TOTAL-ANUA TO WKS-TOANU
+  372                               MOVE WKS-TOTA TO LINEAT
+  373
+  374                               WRITE LINEAT AFTER 2.
+  375
+  376    000924             2830-TERMINA-GEN-REP-TAR.
+  377
+  378    000927                 PERFORM 2825-GENERA-PIE.
+  379
+  380    000930                 MOVE WKS-ANUALIS TO WKS-TOANS.
+  381    000935                 MOVE WKS-TOTAS TO LINEAT.
+  382    000943                 WRITE LINEAT AFTER 2.
+  383
+  384    000955                 CLOSE CLI-INDD
+  385                               REP-TAR.
+  386
+  387    000968                 DISPLAY "REPORTE GENERADO" LINE 17 POSITION 05.
+  388    000981                 DISPLAY "ACEPTAR" LINE 18 POSITION 05.
+  389    000993                 ACCEPT WKS-ESPERA LINE 18 POSITION 20.
+  390
+  391
+  392    001007            3000-FIN.
+  393    001010                 CLOSE CLI-INDD.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/25/23  01:42:52 PAGE   8
+SOURCE FILE: PRA-FIN                    OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           PRA-FIN
+
+
+READ ONLY SIZE =                      1966 (X"000007AE") BYTES
+
+READ/WRITE SIZE =                     1806 (X"0000070E") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =       3772 (X"00000EBC") BYTES      393 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM PRA-FIN
+
+
+
+OBJECT VERSION LEVEL =   1
+

@@ -1,0 +1,46 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/09/23  21:07:27 PAGE   1
+SOURCE FILE: PRAC2                      OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                    IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. PRAC2.
+    3                    ENVIRONMENT DIVISION.
+    4                    DATA DIVISION.
+    5                       WORKING-STORAGE SECTION.
+    6                       01 WKS-NOM-COM.
+    7                           03 WKS-NOMBRE PIC X(20).
+    8                           03 WKS-APE-PAT PIC X(20).
+    9                           03 WKS-APE-MAT PIC X(20).
+   10                    PROCEDURE DIVISION.
+   11    000002             INICIO.
+   12    000005                 DISPLAY "INTRODUCE NOMBRE:" LINE 10 POSITION 05.
+   13    000017                 ACCEPT WKS-NOMBRE LINE 10 POSITION 33.
+   14    000029                 DISPLAY "INTRODUCE APELLIDO PATERNO:" LINE 11 POSITION 05.
+   15    000041                 ACCEPT WKS-APE-PAT LINE 11 POSITION 33.
+   16    000053                 DISPLAY "INTRODUCE APELLIDO MATERNO:" LINE 12 POSITION 05.
+   17    000065                 ACCEPT WKS-APE-MAT LINE 12 POSITION 33.
+   18    000077                 DISPLAY "EL NOMBRE COMPLETO ES: " LINE 13 POSITION 05.
+   19    000089                 DISPLAY WKS-NOM-COM LINE 14 POSITION 05.
+   20    000101                 STOP RUN.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/09/23  21:07:27 PAGE   2
+SOURCE FILE: PRAC2                      OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           PRAC2
+
+
+READ ONLY SIZE =                       526 (X"0000020E") BYTES
+
+READ/WRITE SIZE =                       72 (X"00000048") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =        598 (X"00000256") BYTES       20 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM PRAC2
+
+
+
+OBJECT VERSION LEVEL =   1
+

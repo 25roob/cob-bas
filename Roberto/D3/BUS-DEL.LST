@@ -1,0 +1,104 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/23/23  23:12:59 PAGE   1
+SOURCE FILE: BUS-DEL                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. BUS-DEL.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLI-INDR ASSIGN TO DISK
+    7                           ORGANIZATION IS INDEXED
+    8                           ACCESS MODE IS RANDOM
+    9                           RECORD KEY IS ID-CLI.
+   10                       DATA DIVISION.
+   11                       FILE SECTION.
+   12                       FD CLI-INDR.
+   13                   *
+   14                       01 REG-CLI.
+   15                           03 ID-CLI     PIC 9(03).
+   16                           03 NOM-CLI    PIC X(30).
+   17                           03 CLA-TAR    PIC 9.
+   18                           03 NOM-TAR    PIC X(20).
+   19                           03 ANUA       PIC 9(05)V99.
+   20                           03 FEC-ING    PIC 9(08).
+   21
+   22                       WORKING-STORAGE SECTION.
+   23                       01 WKS-ID             PIC 999.
+   24                       77 WKS-FIN            PIC 9.
+   25                       77 WKS-DESC           PIC X.
+   26                       77 WKS-OTRO           PIC X.
+   27
+   28                       PROCEDURE DIVISION.
+   29    000002             INICIO.
+   30    000005                 PERFORM 1000-INICIO.
+   31    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+   32    000019                 PERFORM 3000-FIN.
+   33    000022                 STOP RUN.
+   34
+   35    000025             1000-INICIO.
+   36    000028                 OPEN I-O CLI-INDR.
+   37
+   38    000037             2000-PROCESO.
+   39    000040                 DISPLAY "               " LINE 11 POSITION 05.
+   40    000052                 DISPLAY "INTRODUCE EL ID:" LINE 10 POSITION 05.
+   41    000064                 ACCEPT WKS-ID LINE 10 POSITION 35.
+   42    000076                 MOVE WKS-ID TO ID-CLI.
+   43    000083                 READ CLI-INDR
+   44                                INVALID KEY
+   45                                MOVE 0 TO WKS-ID
+   46                                MOVE "   " TO ID-CLI
+   47                                DISPLAY "NO EXISTE           "
+   48                                LINE 11 POSITION 05
+   49                                INITIALIZE REG-CLI.
+   50    000152                 DISPLAY REG-CLI LINE 12 POSITION 05.
+   51
+   52    000165                 IF WKS-ID = 0
+   53                                NEXT SENTENCE
+   54                           ELSE
+   55                           DISPLAY "SEGURO DESEA ELIMINAR REGISTRO?(S/N)"
+   56                                LINE 13 POSITION 05
+   57                           ACCEPT WKS-DESC LINE 13 POSITION 43.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/23/23  23:12:59 PAGE   2
+SOURCE FILE: BUS-DEL                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   BUS-DEL
+
+   58    000196                 IF WKS-DESC = "S"
+   59                                DELETE CLI-INDR
+   60                                DISPLAY "REGISTRO ELIMINADO CON EXITO"
+   61                                LINE 14 POSITION 05
+   62                           ELSE
+   63                                DISPLAY "REGISTRO NO ELIMINADO"
+   64                                LINE 14 POSITION 05.
+   65
+   66    000243                 DISPLAY "DESEA ELIMINAR OTRO REGISTRO?(S/N)"
+   67                                LINE 15 POSITION 05.
+   68    000256                 ACCEPT WKS-OTRO LINE 15 POSITION 43.
+   69    000268                 IF WKS-OTRO = "N"
+   70                                MOVE 1 TO WKS-FIN.
+   71
+   72    000284             3000-FIN.
+   73    000287                 CLOSE CLI-INDR.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/23/23  23:12:59 PAGE   3
+SOURCE FILE: BUS-DEL                    OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           BUS-DEL
+
+
+READ ONLY SIZE =                       898 (X"00000382") BYTES
+
+READ/WRITE SIZE =                      274 (X"00000112") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =       1172 (X"00000494") BYTES       73 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM BUS-DEL
+
+
+
+OBJECT VERSION LEVEL =   1
+

@@ -1,0 +1,68 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  17:17:28 PAGE   1
+SOURCE FILE: ARC-SORT                   OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. ARC-SORT.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLIENTES ASSIGN TO DISK.
+    7                           SELECT CLI-ORD ASSIGN TO DISK.
+    8                           SELECT SOR-TEMP ASSIGN TO SORT.
+    9                       DATA DIVISION.
+   10                       FILE SECTION.
+   11                       FD CLIENTES.
+   12                       01 REG-CLI.
+   13                           03 ID-CLI     PIC 9(03).
+   14                           03 NOM-CLI    PIC X(30).
+   15                           03 FILLER     PIC X(35).
+   16                   *           03 CLA-TAR    PIC 9.
+   17                   *           03 NOM-TAR    PIC X(20).
+   18                   *           03 ANUA       PIC 9(05)V99.
+   19                   *           03 FEC-ING    PIC 9(08).
+   20
+   21                       FD CLI-ORD.
+   22                       01 REG-CLI-O.
+   23                           03 ID-CLI-O       PIC 9(03).
+   24                           03 NOM-CLI     PIC X(30).
+   25                           03 FILLER         PIC X(35).
+   26
+   27                       SD SOR-TEMP.
+   28                       01 REG-CLI-S.
+   29                           03 ID-CLI-S       PIC 9(03).
+   30                           03 NOM-CLI-S      PIC X(30).
+   31                           03 FILLER         PIC X(35).
+   32
+   33                       PROCEDURE DIVISION.
+   34    000002             INICIO.
+   35    000005                 SORT SOR-TEMP
+   36                           ASCENDING KEY NOM-CLI-S
+   37                           USING CLIENTES
+   38                           GIVING CLI-ORD.
+   39
+   40    000008                 DISPLAY "FIN DEL PROCESO" LINE 10 POSITION 05.
+   41
+   42    000021                 STOP RUN.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  17:17:28 PAGE   2
+SOURCE FILE: ARC-SORT                   OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           ARC-SORT
+
+
+READ ONLY SIZE =                       366 (X"0000016E") BYTES
+
+READ/WRITE SIZE =                      692 (X"000002B4") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =       1058 (X"00000422") BYTES       42 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM ARC-SORT
+
+
+
+OBJECT VERSION LEVEL =   1
+

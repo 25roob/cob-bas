@@ -1,0 +1,99 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  19:21:21 PAGE   1
+SOURCE FILE: ACT-SEC2                   OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. ACT-SEC.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLIENTES ASSIGN TO DISK.
+    7                       DATA DIVISION.
+    8                       FILE SECTION.
+    9                       FD CLIENTES.
+   10                       01 REG-CLI.
+   11                           03 ID-CLIENTE PIC 9(03).
+   12                           03 NOM-CLI    PIC X(30).
+   13                           03 CLA-TAR    PIC 9.
+   14                           03 NOM-TAR    PIC X(20).
+   15                           03 ANUA       PIC 9(05)V99.
+   16                           03 FEC-ING    PIC 9(08).
+   17
+   18                    WORKING-STORAGE SECTION.
+   19                       01 WKS-ID         PIC 999.
+   20                    77 WKS-FIN        PIC 9.
+   21                       77 WKS-FIN-L      PIC 9.
+   22                    77 WKS-DESC       PIC X.
+   23
+   24                       PROCEDURE DIVISION.
+   25    000002             INICIO.
+   26    000005                 PERFORM 1000-INICIO.
+   27    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+   28    000019                 PERFORM 3000-FIN.
+   29    000022                 STOP RUN.
+   30
+   31    000025             1000-INICIO.
+   32    000028                 OPEN I-O CLIENTES.
+   33
+   34    000037             2000-PROCESO.
+   35
+   36    000040                 MOVE 0 TO WKS-FIN-L.
+   37    000046                 MOVE 0 TO WKS-ID.
+   38    000053                 DISPLAY "INGRESA EL ID:" LINE 10 POSITION 05.
+   39    000065                 ACCEPT WKS-ID LINE 10 POSITION 30.
+   40
+   41    000077                 PERFORM 2010-LEC-DIS UNTIL WKS-FIN-L = 1.
+   42
+   43    000088                 DISPLAY
+   44                            "ACTUALIZAR OTRO REGISTRO?(S/N):" LINE 17 POSITION 05.
+   45    000100                 ACCEPT WKS-DESC LINE 17 POSITION 40.
+   46
+   47    000112                 IF WKS-DESC = "N"
+   48                               MOVE 1 TO WKS-FIN.
+   49
+   50    000128             2010-LEC-DIS.
+   51    000131                 READ CLIENTES
+   52                               AT END MOVE 1 TO WKS-FIN-L
+   53                               DISPLAY "ID NO ENCONTRADO" LINE 11 POSITION 05
+   54                               CLOSE CLIENTES
+   55                               OPEN I-O CLIENTES.
+   56    000172                 IF WKS-ID = ID-CLIENTE
+   57                               DISPLAY REG-CLI LINE 11 POSITION 05
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  19:21:21 PAGE   2
+SOURCE FILE: ACT-SEC2                   OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   ACT-SEC
+
+   58                               DISPLAY "NUEVA ANUALIDAD:" LINE 14 POSITION 05
+   59                               ACCEPT ANUA LINE 14 POSITION 30
+   60                               DISPLAY REG-CLI LINE 15 POSITION 05
+   61                           REWRITE REG-CLI
+   62                               CLOSE CLIENTES
+   63                               OPEN I-O CLIENTES
+   64
+   65                           MOVE 1 TO WKS-FIN-L.
+   66
+   67    000257             3000-FIN.
+   68    000260                 CLOSE CLIENTES.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  19:21:21 PAGE   3
+SOURCE FILE: ACT-SEC2                   OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           ACT-SEC
+
+
+READ ONLY SIZE =                       766 (X"000002FE") BYTES
+
+READ/WRITE SIZE =                      266 (X"0000010A") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =       1032 (X"00000408") BYTES       68 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM ACT-SEC
+
+
+
+OBJECT VERSION LEVEL =   1
+

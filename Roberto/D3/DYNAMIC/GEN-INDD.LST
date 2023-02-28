@@ -1,0 +1,106 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  17:16:25 PAGE   1
+SOURCE FILE: GEN-INDD                   OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. GEN-INDD.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLI-INDD ASSIGN TO DISK
+    7                           ORGANIZATION IS INDEXED
+    8                           ACCESS MODE IS DYNAMIC
+    9                           RECORD KEY IS ID-CLIENTE
+   10                        ALTERNATE RECORD KEY IS NOM-TAR WITH DUPLICATES
+   11                        ALTERNATE RECORD KEY IS FEC-ING WITH DUPLICATES.
+   12                       DATA DIVISION.
+   13                       FILE SECTION.
+   14                       FD CLI-INDD.
+   15                   *
+   16                       01 REG-CLI.
+   17                           03 ID-CLIENTE PIC 9(03).
+   18                           03 NOM-CLI    PIC X(30).
+   19                           03 CLA-TAR    PIC 9.
+   20                           03 NOM-TAR    PIC X(20).
+   21                           03 ANUA       PIC 9(05)V99.
+   22                           03 FEC-ING    PIC 9(08).
+   23
+   24                       WORKING-STORAGE SECTION.
+   25                       77 WKS-FIN            PIC 9.
+   26                       77 WKS-DESC           PIC X.
+   27
+   28                       PROCEDURE DIVISION.
+   29    000002             INICIO.
+   30    000005                 PERFORM 1000-INICIO.
+   31    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+   32    000019                 PERFORM 3000-FIN.
+   33    000022                 STOP RUN.
+   34
+   35    000025             1000-INICIO.
+   36                   *    CREAR ARCHIVO.
+   37                   *    PRIMERA VEZ.
+   38    000028              OPEN OUTPUT CLI-INDD.
+   39                   *    SI YA EXISTE:
+   40                   *     OPEN I-O CLI-INDD.
+   41
+   42    000038             2000-PROCESO.
+   43    000041                 DISPLAY "ID CLIENTE:" LINE 10 POSITION 05.
+   44    000053                 ACCEPT ID-CLIENTE LINE 10 POSITION 33.
+   45    000065                 DISPLAY "NOMBRE DEL CLIENTE:" LINE 11 POSITION 05.
+   46    000077                 ACCEPT NOM-CLI LINE 11 POSITION 33.
+   47    000089                 DISPLAY "CLAVE DE LA TARJETA:" LINE 12 POSITION 05.
+   48    000101                 ACCEPT CLA-TAR LINE 12 POSITION 33.
+   49
+   50    000113                 IF CLA-TAR = 1
+   51                               MOVE "DEBITO" TO NOM-TAR
+   52                               MOVE 1000 TO ANUA
+   53                           ELSE IF CLA-TAR = 2
+   54                               MOVE "CREDITO" TO NOM-TAR
+   55                               MOVE 3500 TO ANUA
+   56                           ELSE IF CLA-TAR = 3
+   57                               MOVE "NOMINA" TO NOM-TAR
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  17:16:25 PAGE   2
+SOURCE FILE: GEN-INDD                   OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   GEN-INDD
+
+   58                               MOVE 0 TO ANUA.
+   59
+   60    000185                 DISPLAY "FECHA DE INGRESO:(AAAAMMDD)" LINE 15 POSITION 05.
+   61    000198                 ACCEPT FEC-ING LINE 15 POSITION 33.
+   62
+   63    000210                 WRITE REG-CLI INVALID KEY
+   64                                         DISPLAY "LLAVE INVALIDA".
+   65
+   66    000225                 DISPLAY
+   67                            "DESEA CAPTURAR MAS REGISTROS?:(S/N)" LINE 17 POSITION 05.
+   68    000238                 ACCEPT WKS-DESC LINE 17 POSITION 43.
+   69    000250                 IF WKS-DESC = "N"
+   70                               MOVE 1 TO WKS-FIN.
+   71
+   72
+   73    000266             3000-FIN.
+   74                   *    CERRAR ARCHIVO.
+   75    000269                 CLOSE CLI-INDD.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/15/23  17:16:25 PAGE   3
+SOURCE FILE: GEN-INDD                   OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           GEN-INDD
+
+
+READ ONLY SIZE =                       882 (X"00000372") BYTES
+
+READ/WRITE SIZE =                      278 (X"00000116") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =       1160 (X"00000488") BYTES       75 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM GEN-INDD
+
+
+
+OBJECT VERSION LEVEL =   1
+

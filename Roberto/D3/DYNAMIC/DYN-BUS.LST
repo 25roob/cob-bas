@@ -1,0 +1,91 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/22/23  19:48:05 PAGE   1
+SOURCE FILE: DYN-BUS                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. DYN-BUS.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLI-INDD ASSIGN TO DISK
+    7                           ORGANIZATION IS INDEXED
+    8                           ACCESS MODE IS DYNAMIC
+    9                           RECORD KEY IS ID-CLIENTE
+   10                        ALTERNATE RECORD KEY IS NOM-TAR WITH DUPLICATES
+   11                        ALTERNATE RECORD KEY IS FEC-ING WITH DUPLICATES.
+   12                       DATA DIVISION.
+   13                       FILE SECTION.
+   14                       FD CLI-INDD.
+   15                   *
+   16                       01 REG-CLI.
+   17                           03 ID-CLIENTE     PIC 9(03).
+   18                           03 NOM-CLI    PIC X(30).
+   19                           03 CLA-TAR    PIC 9.
+   20                           03 NOM-TAR    PIC X(20).
+   21                           03 ANUA       PIC 9(05)V99.
+   22                           03 FEC-ING    PIC 9(08).
+   23
+   24                       WORKING-STORAGE SECTION.
+   25                       01 WKS-ID             PIC 999.
+   26                       77 WKS-FIN            PIC 9.
+   27                       77 WKS-DESC           PIC X.
+   28
+   29                       PROCEDURE DIVISION.
+   30    000002             INICIO.
+   31    000005                 PERFORM 1000-INICIO.
+   32    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+   33    000019                 PERFORM 3000-FIN.
+   34    000022                 STOP RUN.
+   35
+   36    000025             1000-INICIO.
+   37    000028                 OPEN INPUT CLI-INDD.
+   38
+   39    000037             2000-PROCESO.
+   40    000040                 DISPLAY SPACES LINE 11 POSITION 05 ERASE.
+   41    000054                 DISPLAY "INTRODUCE EL ID:" LINE 10 POSITION 05.
+   42    000066                 ACCEPT WKS-ID LINE 10 POSITION 35.
+   43    000078                 MOVE WKS-ID TO ID-CLIENTE.
+   44    000085                 READ CLI-INDD
+   45                            INVALID KEY
+   46                            MOVE 0 TO WKS-ID
+   47                            MOVE "   " TO ID-CLIENTE
+   48                            DISPLAY "NO EXISTE           "
+   49                            LINE 11 POSITION 05
+   50                            INITIALIZE REG-CLI.
+   51    000154                 DISPLAY REG-CLI LINE 12 POSITION 05.
+   52
+   53    000167                 DISPLAY "DESEA RELIZAR OTRA CONSULTA?(S/N)"
+   54                                LINE 13 POSITION 05.
+   55    000179                 ACCEPT WKS-DESC LINE 13 POSITION 43.
+   56    000191                 IF WKS-DESC = "N"
+   57                                MOVE 1 TO WKS-FIN.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/22/23  19:48:05 PAGE   2
+SOURCE FILE: DYN-BUS                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8   DYN-BUS
+
+   58
+   59    000207             3000-FIN.
+   60    000210                 CLOSE CLI-INDD.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/22/23  19:48:05 PAGE   3
+SOURCE FILE: DYN-BUS                    OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           DYN-BUS
+
+
+READ ONLY SIZE =                       690 (X"000002B2") BYTES
+
+READ/WRITE SIZE =                      282 (X"0000011A") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =        972 (X"000003CC") BYTES       60 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM DYN-BUS
+
+
+
+OBJECT VERSION LEVEL =   1
+

@@ -1,0 +1,35 @@
+                            REPORTE DE TARJETAS
+FECHA DE PROCESO: 25/02/23                                      PAG. : 01
+
+TIPO DE TARJETA:    CREDITO
+
+ID-CLIENTE  NOMBRE          CLAVE DE TARJETA   FEC DE INGRESO   ANUALIDAD
+  020       GIMENA CANTU            2            20210404       $3,500.00
+  050       GILBERTO CRUZ           2            20201212       $3,500.00
+  080       GABRIELA BATALLA        2            20230101       $3,500.00
+  110       JESUS QUIJANO           2            20220415       $3,500.00
+
+                    TOTAL ANUALIDAD CREDITO :     $14,000.00                            REPORTE DE TARJETAS
+FECHA DE PROCESO: 25/02/23                                      PAG. : 02
+
+TIPO DE TARJETA:    DEBITO
+
+ID-CLIENTE  NOMBRE          CLAVE DE TARJETA   FEC DE INGRESO   ANUALIDAD
+  010       RAMON CARRILLO          1            20200303       $1,000.00
+  040       MARGE SIMPSON           1            20230330       $1,000.00
+  070       MARIO MORENO            1            20220921       $1,000.00
+  100       AMPARO BALTAZAR         1            20210404       $1,000.00
+
+                    TOTAL ANUALIDAD DEBITO  :      $4,000.00                            REPORTE DE TARJETAS
+FECHA DE PROCESO: 25/02/23                                      PAG. : 03
+
+TIPO DE TARJETA:    NOMINA
+
+ID-CLIENTE  NOMBRE          CLAVE DE TARJETA   FEC DE INGRESO   ANUALIDAD
+  030       HOMERO SIMPSON          3            20220505           $0.00
+  060       MARIA CALLES            3            20211111           $0.00
+  090       ROBERTO QUIJANO         3            20200202           $0.00
+
+                    TOTAL ANUALIDAD NOMINA  :          $0.00
+
+                    TOTAL ANUALIDADES:       $18,000.00

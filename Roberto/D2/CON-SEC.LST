@@ -1,0 +1,63 @@
+
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/13/23  19:51:28 PAGE   1
+SOURCE FILE: CON-SEC                    OPTIONS: L
+
+ LINE   DEBUG     PG/LN  A...B.......2.........3.........4.........5.........6.........7..ID.....8
+
+    1                       IDENTIFICATION DIVISION.
+    2                       PROGRAM-ID. CON-SEC.
+    3                       ENVIRONMENT DIVISION.
+    4                       INPUT-OUTPUT SECTION.
+    5                       FILE-CONTROL.
+    6                           SELECT CLIENTES ASSIGN TO DISK.
+    7                       DATA DIVISION.
+    8                       FILE SECTION.
+    9                       FD CLIENTES.
+   10                       01 REG-CLI.
+   11                           03 ID-CLIENTE PIC 9(03).
+   12                           03 NOM-CLI    PIC X(30).
+   13                           03 CLA-TAR    PIC 9.
+   14                           03 NOM-TAR    PIC X(20).
+   15                           03 ANUA       PIC 9(05)V99.
+   16                           03 FEC-ING    PIC 9(08).
+   17
+   18                    WORKING-STORAGE SECTION.
+   19                    77 WKS-FIN            PIC 9.
+   20                   *       77 WKS-DESC           PIC X.
+   21
+   22                       PROCEDURE DIVISION.
+   23    000002             INICIO.
+   24    000005                 PERFORM 1000-INICIO.
+   25    000008                 PERFORM 2000-PROCESO UNTIL WKS-FIN = 1.
+   26    000019                 PERFORM 3000-FIN.
+   27
+   28    000024             1000-INICIO.
+   29    000027                 OPEN INPUT CLIENTES.
+   30    000036             2000-PROCESO.
+   31    000039                 READ CLIENTES
+   32                               AT END MOVE 1 TO WKS-FIN.
+   33    000054                 IF WKS-FIN = 0
+   34                               DISPLAY REG-CLI.
+   35
+   36    000069             3000-FIN.
+   37    000072                 CLOSE CLIENTES.
+RM/COBOL-85 (VER 2.01)  FOR DOS 2.00+          02/13/23  19:51:28 PAGE   2
+SOURCE FILE: CON-SEC                    OPTIONS: L
+
+PROGRAM SUMMARY STATISTICS                                                                           CON-SEC
+
+
+READ ONLY SIZE =                       382 (X"0000017E") BYTES
+
+READ/WRITE SIZE =                      258 (X"00000102") BYTES
+
+OVERLAYABLE SEGMENT SIZE =               0 (X"00000000") BYTES
+
+TOTAL SIZE (LESS I/O BUFFERS) =        640 (X"00000280") BYTES       37 LINES
+
+    0 ERRORS         0 WARNINGS     FOR PROGRAM CON-SEC
+
+
+
+OBJECT VERSION LEVEL =   1
+

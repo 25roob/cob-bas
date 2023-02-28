@@ -1,0 +1,17 @@
+                            REPORTE DE CLIENTES
+FECHA DE PROCESO: 24/02/23                                      PAG. : 01
+
+ID-CLIENTE  NOMBRE           TIPO DE TARJETA   FEC DE INGRESO   ANUALIDAD
+  010       RAMON CARRILLO         DEBITO       20200303        $1,000.00
+  020       GIMENA CANTU           CREDITO      20210404        $3,500.00
+  030       HOMERO SIMPSON         NOMINA       20220505            $0.00
+  040       MARGE SIMPSON          DEBITO       20230330        $1,000.00
+  050       GILBERTO CRUZ          CREDITO      20201212        $3,500.00
+  060       MARIA CALLES           NOMINA       20211111            $0.00
+  070       MARIO MORENO           DEBITO       20220921        $1,000.00
+  080       GABRIELA BATALLA       CREDITO      20230101        $3,500.00
+  090       ROBERTO QUIJANO        NOMINA       20200202            $0.00
+  100       AMPARO BALTAZAR        DEBITO       20210404        $1,000.00
+  110       JESUS QUIJANO          CREDITO      20220415        $3,500.00
+
+                                      TOTAL DE CLIENTES:         11
