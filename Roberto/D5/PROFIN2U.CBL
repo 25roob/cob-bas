@@ -548,12 +548,15 @@
            ADD ANUA                TO WKS-ANUASP.
       
        2923-ESCRIBE-DATE-ANUA.
+           IF WKS-NUM-PAGA = 0
+               NEXT SENTENCE
+           ELSE 
       *     MOVE WKS-ASPLIT TO WKS-ANOT.
-           MOVE WKS-ANUASP TO WKS-PARTOT.
-           MOVE WKS-TOTPAR TO LINEAF.
-      
-           WRITE LINEAF AFTER 1.
-           MOVE ZEROES TO WKS-ANUASP.
+               MOVE WKS-ANUASP TO WKS-PARTOT
+               MOVE WKS-TOTPAR TO LINEAF
+               
+               WRITE LINEAF AFTER 1
+               MOVE ZEROES TO WKS-ANUASP.
       
       
        2924-CHECK-NEXT-TAR.
