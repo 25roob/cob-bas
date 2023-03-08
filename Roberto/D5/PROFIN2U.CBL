@@ -507,7 +507,8 @@
                AT END
                MOVE 0 TO WKS-FIN-CHE
                MOVE WKS-TIPOT TO NOM-TAR
-               PERFORM 2924-CHECK-NEXT-TAR UNTIL WKS-FIN-CHE = 1
+
+               PERFORM 2924-CHECK-NEXT-TAR
                MOVE ZEROES TO FEC-ING
                START CLI-INDD KEY IS GREATER THAN FEC-ING
                INVALID KEY MOVE 1 TO WKS-FINR3.
@@ -550,11 +551,11 @@
        2923-ESCRIBE-DATE-ANUA.
            IF WKS-NUM-PAGA = 0
                NEXT SENTENCE
-           ELSE 
+           ELSE
       *     MOVE WKS-ASPLIT TO WKS-ANOT.
                MOVE WKS-ANUASP TO WKS-PARTOT
                MOVE WKS-TOTPAR TO LINEAF
-               
+      
                WRITE LINEAF AFTER 1
                MOVE ZEROES TO WKS-ANUASP.
       
@@ -563,16 +564,12 @@
       
            START CLI-INDD KEY IS GREATER THAN NOM-TAR
            INVALID KEY MOVE 1 TO WKS-FINR3.
+      
            READ CLI-INDD
            NEXT
-           AT END MOVE 1 TO WKS-FINR3
-           MOVE 1 TO WKS-FIN-CHE.
+           AT END MOVE 1 TO WKS-FINR3.
       
-           IF NOM-TAR = WKS-TIPOT
-               NEXT SENTENCE
-           ELSE
-               MOVE NOM-TAR TO WKS-TIPOT
-               MOVE 1 TO WKS-FIN-CHE.
+           MOVE NOM-TAR TO WKS-TIPOT.
       
       
        2925-GENERA-PIE.
